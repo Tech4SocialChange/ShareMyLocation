@@ -13,8 +13,69 @@
     <LinearLayout
         android:id="@+id/mapLo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical"
+        >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sms to :"
+                />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="phone Number"
+            android:gravity="center"
+            android:layout_weight="4"
+            android:inputType="number"
+            android:id="@+id/editText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Set Time :"
+                />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Pick Time"
+            android:layout_weight="4"
+            android:gravity="center"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Address :"
+                />
+        <EditText
+            android:id="@+id/etLocationName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Location Name"
+            android:layout_weight="4"
+            android:gravity="center"
+            />
+        </LinearLayout>
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -30,8 +91,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="#a0e6a6"
-        android:visibility="gone"
+        android:padding="10dp"
+        android:background="#188354"
+        android:visibility="visible"
         android:orientation="vertical">
 
         <EditText
@@ -39,7 +101,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="7dp"
             android:textSize="@dimen/text_size_for_edit_text"
+            android:background="@drawable/border"
             android:hint="@string/user_name"
 
             />
@@ -52,6 +116,8 @@
             android:gravity="center"
             android:inputType="number"
             android:textSize="@dimen/text_size_for_edit_text"
+            android:padding="7dp"
+            android:background="@drawable/border"
             android:hint="@string/user_number"
 
             />
@@ -62,7 +128,7 @@
             android:layout_height="wrap_content"
             android:text="@string/save_btn"
             android:textAllCaps="false"
-            android:onClick="signInBtn"
+            android:onClick="btnRegister"
             />
     </LinearLayout>
 

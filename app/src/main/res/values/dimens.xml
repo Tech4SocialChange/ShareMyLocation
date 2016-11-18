@@ -10,7 +10,7 @@
 
 
 
-    <dimen name="text_size_for_edit_text">16dp</dimen>
+    <dimen name="text_size_for_edit_text">20dp</dimen>
 
 
 </resources>
