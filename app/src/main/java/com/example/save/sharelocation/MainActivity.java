@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     EditText etUserName,etUserNumber;
-    LinearLayout userNameNumberLo;
+    LinearLayout userNameNumberLo, mapLo;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         etUserNumber = (EditText)findViewById(R.id.etUserNumber);
         etUserName = (EditText)findViewById(R.id.etUserName);
         userNameNumberLo = (LinearLayout) findViewById(R.id.userNameNumberLo);
+        mapLo = (LinearLayout) findViewById(R.id.mapLo);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -122,7 +123,18 @@ public class MainActivity extends AppCompatActivity
         /*Send to server user information*/
         String userName = etUserName.getText().toString();
         String userNumber = etUserNumber.getText().toString();
+        
+        
 
+        saveStringInSharedPreferences("userName", userName);
+        saveStringInSharedPreferences("userNumber", userNumber);
+        saveIntInSharedPreferences("flagForRegister",0);
+        userNameNumberLo.setVisibility(View.GONE);
+        mapLo.setVisibility(View.VISIBLE);
+
+        Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show();
+        
+        
         sendUserInformationToServer(userName,userNumber);
        /*Send to server user information*/
 
