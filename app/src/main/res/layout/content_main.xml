@@ -11,12 +11,11 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:id="@+id/mapLo"
+        android:id="@+id/locationNotifierLo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
         android:orientation="vertical"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,16 +25,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Sms to :"
-                />
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="phone Number"
-            android:gravity="center"
-            android:layout_weight="4"
-            android:inputType="number"
-            android:id="@+id/editText" />
+                android:text="Sms to :" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:hint="phone Number"
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,15 +45,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Set Time :"
-                />
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Pick Time"
-            android:layout_weight="4"
-            android:gravity="center"
-            />
+                android:text="Set Time :" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:hint="Pick Time" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,17 +63,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Address :"
-                />
-        <EditText
-            android:id="@+id/etLocationName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Location Name"
-            android:layout_weight="4"
-            android:gravity="center"
-            />
+                android:text="Address :" />
+
+            <EditText
+                android:id="@+id/etLocationName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:hint="Location Name" />
         </LinearLayout>
+
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -85,26 +83,156 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#024e3c"
+        >
+
+        <LinearLayout
+            android:id="@+id/locationSmsLo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="Write Number" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="Write Number" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="Write Number" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/securityCodeEtLo"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="Enter Security Code" />
+
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:onClick="btnSaveCode"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCodeTvLo"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Edit"
+                    android:onClick="btnEditCode"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
     <LinearLayout
         android:id="@+id/userNameNumberLo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="10dp"
         android:background="#188354"
-        android:visibility="visible"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/etUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
             android:gravity="center"
+            android:hint="@string/user_name"
             android:padding="7dp"
             android:textSize="@dimen/text_size_for_edit_text"
-            android:background="@drawable/border"
-            android:hint="@string/user_name"
 
             />
 
@@ -113,23 +241,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:textSize="@dimen/text_size_for_edit_text"
-            android:padding="7dp"
             android:background="@drawable/border"
+            android:gravity="center"
             android:hint="@string/user_number"
+            android:inputType="number"
+            android:padding="7dp"
+            android:textSize="@dimen/text_size_for_edit_text"
 
             />
 
         <Button
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_btn"
-            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
             android:onClick="btnRegister"
-            />
+            android:text="@string/save_btn"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 

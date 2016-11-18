@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     EditText etUserName, etUserNumber, etLocationName;
-    LinearLayout userNameNumberLo, mapLo;
+    LinearLayout userNameNumberLo, locationNotifierLo, locationSmsLo, securityCodeEtLo,securityCodeTvLo;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -111,7 +111,10 @@ public class MainActivity extends AppCompatActivity
         etUserName = (EditText) findViewById(R.id.etUserName);
         etLocationName = (EditText) findViewById(R.id.etLocationName);
         userNameNumberLo = (LinearLayout) findViewById(R.id.userNameNumberLo);
-        mapLo = (LinearLayout) findViewById(R.id.mapLo);
+        locationNotifierLo = (LinearLayout) findViewById(R.id.locationNotifierLo);
+        locationSmsLo = (LinearLayout) findViewById(R.id.locationSmsLo);
+        securityCodeEtLo = (LinearLayout) findViewById(R.id.securityCodeEtLo);
+        securityCodeTvLo = (LinearLayout) findViewById(R.id.securityCodeTvLo);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,11 +130,12 @@ public class MainActivity extends AppCompatActivity
         if (flagForRegister == 1) {
             toolbar.setVisibility(View.GONE);
             userNameNumberLo.setVisibility(View.VISIBLE);
-            mapLo.setVisibility(View.GONE);
+            locationNotifierLo.setVisibility(View.GONE);
         } else {
             userNameNumberLo.setVisibility(View.GONE);
-            mapLo.setVisibility(View.VISIBLE);
+            locationNotifierLo.setVisibility(View.VISIBLE);
             toolbar.setVisibility(View.VISIBLE);
+            setTitle("Location Notifier");
         }
 
         // saveIntInSharedPreferences("flagForRegister", 1);
@@ -191,7 +195,7 @@ public class MainActivity extends AppCompatActivity
                                     saveStringInSharedPreferences("userNumber", userNumber);
                                     saveIntInSharedPreferences("flagForRegister", 0);
                                     userNameNumberLo.setVisibility(View.GONE);
-                                    mapLo.setVisibility(View.VISIBLE);
+                                    locationNotifierLo.setVisibility(View.VISIBLE);
                                     toolbar.setVisibility(View.VISIBLE);
                                     Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(getApplicationContext(), "Phone Number is verified", Toast.LENGTH_LONG).show();
@@ -278,7 +282,7 @@ public class MainActivity extends AppCompatActivity
             saveStringInSharedPreferences("userNumber", userNumber);
             saveIntInSharedPreferences("flagForRegister", 0);
             userNameNumberLo.setVisibility(View.GONE);
-            mapLo.setVisibility(View.VISIBLE);
+            locationNotifierLo.setVisibility(View.VISIBLE);
             toolbar.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show();
 
@@ -441,9 +445,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_location_notifier) {
-            // Handle the camera action
-        } else if (id == R.id.nav_location_SMS) {
+            setTitle("Location Notifier");
+            locationNotifierLo.setVisibility(View.VISIBLE);
+            locationSmsLo.setVisibility(View.GONE);
 
+        } else if (id == R.id.nav_location_SMS) {
+            setTitle("Location SMS");
+            locationNotifierLo.setVisibility(View.GONE);
+            locationSmsLo.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -580,5 +589,18 @@ public class MainActivity extends AppCompatActivity
                 // selectedLocation = latLng;
             }
         });
+    }
+
+    public void btnSaveCode(View view) {
+
+        securityCodeEtLo.setVisibility(View.GONE);
+        securityCodeTvLo.setVisibility(View.VISIBLE);
+
+    }
+
+    public void btnEditCode(View view) {
+
+        securityCodeEtLo.setVisibility(View.VISIBLE);
+        securityCodeTvLo.setVisibility(View.GONE);
     }
 }
