@@ -736,7 +736,7 @@ public class MainActivity extends AppCompatActivity
 
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 11));
                     mMap.addMarker(new MarkerOptions()
-                            .title("akbar")
+                            .title("Current Location")
                             .position(latlng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                     );
@@ -847,6 +847,8 @@ public class MainActivity extends AppCompatActivity
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
+
+        Toast.makeText(this, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
 
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000*5, alarmIntent);
 
