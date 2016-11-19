@@ -14,21 +14,20 @@
         android:id="@+id/locationSmsLo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:background="#024e3c"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
 
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/border"
                 android:orientation="horizontal">
 
@@ -43,15 +42,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save"
                     android:onClick="btnSavePhoneNumber1"
+                    android:text="Save"
                     android:textAllCaps="false" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border"
                 android:orientation="horizontal">
 
@@ -66,14 +65,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save"
                     android:onClick="btnSavePhoneNumber2"
+                    android:text="Save"
                     android:textAllCaps="false" />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border"
                 android:orientation="horizontal">
 
@@ -88,17 +88,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save"
                     android:onClick="btnSavePhoneNumber3"
+                    android:text="Save"
                     android:textAllCaps="false" />
             </LinearLayout>
 
 
             <LinearLayout
                 android:id="@+id/securityCodeEtLo"
-                android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/border"
                 android:orientation="horizontal">
 
@@ -114,33 +114,32 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Save"
                     android:onClick="btnSaveCode"
+                    android:text="Save"
                     android:textAllCaps="false" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/securityCodeTvLo"
-                android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/border"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvSecurityCode"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    />
+                    android:layout_weight="3" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Edit"
                     android:onClick="btnEditCode"
+                    android:text="Edit"
                     android:textAllCaps="false" />
             </LinearLayout>
 
@@ -149,15 +148,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/border"
-                >
-            <Button
+                android:background="@drawable/border">
 
-                android:layout_width="match_parent"
-                android:text="Send the Code to Number"
-                android:textAllCaps="false"
-                android:onClick="btnSendCode"
-                android:layout_height="match_parent" />
+                <Button
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="btnSendCode"
+                    android:text="Send the Code to Number"
+                    android:textAllCaps="false" />
             </LinearLayout>
 
         </LinearLayout>
@@ -217,72 +216,109 @@
         android:padding="8dp"
         android:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sms to :" />
-
-            <EditText
-                android:id="@+id/etLocationNotifierPhoneNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:hint="Phone Number"
-                android:inputType="number" />
-        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/locationNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+
+
             >
-
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/tvLocationNote"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Set Time :" />
+                android:textSize="18sp"
+                android:textColor="#000000"
+                />
 
-            <EditText
-                android:id="@+id/etTimePick"
-                android:layout_width="0dp"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:onClick="etTimePick"
-                android:hint="Pick Time" />
+                android:text="Edit"
+                android:textAllCaps="false"
+                android:onClick="btnLocationEdit"
+                />
+
+
         </LinearLayout>
+
 
         <LinearLayout
+            android:id="@+id/locationInputLo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:layout_marginTop="5dp"
+            android:orientation="vertical"
             >
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Address :" />
+                android:background="@drawable/border">
 
-            <EditText
-                android:id="@+id/etLocationName"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sms to :" />
+
+                <EditText
+                    android:id="@+id/etLocationNotifierPhoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="Phone Number"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:hint="Location Name" />
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Set Time :" />
+
+                <EditText
+                    android:id="@+id/etTimePick"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="Pick Time"
+                    android:onClick="etTimePick" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Address :" />
+
+                <EditText
+                    android:id="@+id/etLocationName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="Location Name" />
+            </LinearLayout>
+
         </LinearLayout>
+
 
         <fragment
             android:id="@+id/map"

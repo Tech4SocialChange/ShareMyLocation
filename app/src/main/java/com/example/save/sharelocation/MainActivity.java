@@ -2,6 +2,8 @@ package com.example.save.sharelocation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -92,10 +94,11 @@ public class MainActivity extends AppCompatActivity
     EditText etUserName, etUserNumber, etLocationName, etPhoneNumberForGetLocation1,
             etPhoneNumberForGetLocation2, etPhoneNumberForGetLocation3, etSecurityCode, etTimePick, etLocationNotifierPhoneNumber;
 
-    LinearLayout userNameNumberLo, locationNotifierLo, securityCodeEtLo,securityCodeTvLo;
+    LinearLayout userNameNumberLo, locationNotifierLo, securityCodeEtLo, securityCodeTvLo,
+            locationInputLo, locationNote;
 
     ScrollView locationSmsLo;
-    TextView tvSecurityCode;
+    TextView tvSecurityCode, tvLocationNote;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity
 
     int flagForRegister;
     int flagForSaveTick = 1;
+
+    int flagForInputNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,12 +134,15 @@ public class MainActivity extends AppCompatActivity
         etLocationNotifierPhoneNumber = (EditText) findViewById(R.id.etLocationNotifierPhoneNumber);
         etTimePick = (EditText) findViewById(R.id.etTimePick);
 
-        tvSecurityCode = (TextView)findViewById(R.id.tvSecurityCode);
+        tvSecurityCode = (TextView) findViewById(R.id.tvSecurityCode);
+        tvLocationNote = (TextView) findViewById(R.id.tvLocationNote);
         userNameNumberLo = (LinearLayout) findViewById(R.id.userNameNumberLo);
         locationNotifierLo = (LinearLayout) findViewById(R.id.locationNotifierLo);
         locationSmsLo = (ScrollView) findViewById(R.id.locationSmsLo);
         securityCodeEtLo = (LinearLayout) findViewById(R.id.securityCodeEtLo);
         securityCodeTvLo = (LinearLayout) findViewById(R.id.securityCodeTvLo);
+        locationInputLo = (LinearLayout) findViewById(R.id.locationInputLo);
+        locationNote = (LinearLayout) findViewById(R.id.locationNote);
 
         etTimePick.setInputType(0);
 
@@ -163,13 +171,27 @@ public class MainActivity extends AppCompatActivity
 
         // saveIntInSharedPreferences("flagForRegister", 1);
 
+        flagForInputNote = sharedPreferences.getInt("flagForInputNote", 1);
+        if (flagForInputNote == 1) {
+            locationInputLo.setVisibility(View.VISIBLE);
+            locationNote.setVisibility(View.GONE);
+        } else {
+            locationInputLo.setVisibility(View.GONE);
+            locationNote.setVisibility(View.VISIBLE);
 
+            String phoneNumber = sharedPreferences.getString("phoneNumberLn", "");
+            String time = sharedPreferences.getString("time", "");
+            String locationName = sharedPreferences.getString("locationName", "");
+            tvLocationNote.setText("Phone Number : " + phoneNumber + ", Time : " + time + ", Location Address: " + locationName);
+
+        }
 
 
     }
 
     String userName;
     String userNumber;
+
     public void btnRegister(View view) {
 
         /*Send to server user information*/
@@ -187,81 +209,81 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void alertDialog( ) {
+    private void alertDialog() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Code Verification");
-            alertDialog.setCancelable(false);
-            alertDialog.setMessage("Please Enter Your Verification Code");
-            alertDialog.setIcon(R.drawable.alert_icon);
+        alertDialog.setTitle("Code Verification");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Please Enter Your Verification Code");
+        alertDialog.setIcon(R.drawable.alert_icon);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
 
-            final EditText etVerificationCode = new EditText(this);
-            etVerificationCode.setLayoutParams(lp);
-            alertDialog.setView(etVerificationCode);
-            etVerificationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-
-            alertDialog.setPositiveButton("Ok",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            String verificationCode  = etVerificationCode.getText().toString();
-
-                            if (verificationCode.length()>0) {
+        final EditText etVerificationCode = new EditText(this);
+        etVerificationCode.setLayoutParams(lp);
+        alertDialog.setView(etVerificationCode);
+        etVerificationCode.setInputType(InputType.TYPE_CLASS_NUMBER);
 
 
-                                if (verificationCode.equals(random)) {
-                                    saveStringInSharedPreferences("userName", userName);
-                                    saveStringInSharedPreferences("userNumber", userNumber);
-                                    saveIntInSharedPreferences("flagForRegister", 0);
-                                    userNameNumberLo.setVisibility(View.GONE);
-                                    locationNotifierLo.setVisibility(View.VISIBLE);
-                                    toolbar.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(), "Phone Number is verified", Toast.LENGTH_LONG).show();
-                                    //sendUserInformationToServer(userName, userNumber);
-                                } else {
+        alertDialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-                                    dialog.cancel();
-                                    Toast.makeText(MainActivity.this, "Wrong Code", Toast.LENGTH_SHORT).show();
+                        String verificationCode = etVerificationCode.getText().toString();
 
-                                    alertDialog();
-                                }
-                            }else {
+                        if (verificationCode.length() > 0) {
+
+
+                            if (verificationCode.equals(random)) {
+                                saveStringInSharedPreferences("userName", userName);
+                                saveStringInSharedPreferences("userNumber", userNumber);
+                                saveIntInSharedPreferences("flagForRegister", 0);
+                                userNameNumberLo.setVisibility(View.GONE);
+                                locationNotifierLo.setVisibility(View.VISIBLE);
+                                toolbar.setVisibility(View.VISIBLE);
+                                Toast.makeText(getApplicationContext(), "Registered", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Phone Number is verified", Toast.LENGTH_LONG).show();
+                                //sendUserInformationToServer(userName, userNumber);
+                            } else {
+
                                 dialog.cancel();
-                                Toast.makeText(MainActivity.this, "Input is blank", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Wrong Code", Toast.LENGTH_SHORT).show();
+
                                 alertDialog();
                             }
-
-
-                        }
-                    });
-
-            alertDialog.setNegativeButton("Cancel",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                        } else {
                             dialog.cancel();
+                            Toast.makeText(MainActivity.this, "Input is blank", Toast.LENGTH_SHORT).show();
+                            alertDialog();
                         }
-                    });
-            alertDialog.setNeutralButton("Try Auto",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            tryAutoVerification(userName,userNumber);
 
-                        }
-                    });
 
-            alertDialog.show();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.setNeutralButton("Try Auto",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        tryAutoVerification(userName, userNumber);
+
+                    }
+                });
+
+        alertDialog.show();
 
     }
 
 
-    private void alertDialogForEditSecurityCode( ) {
+    private void alertDialogForEditSecurityCode() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Edit");
@@ -291,7 +313,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void alertDialogForExit( ) {
+    private void alertDialogForExit() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Exit");
@@ -321,7 +343,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void tryAutoVerification(String userName,String userNumber){
+    private void tryAutoVerification(String userName, String userNumber) {
 
 //        Intent intent = getIntent();
 //        String msg = intent.getStringExtra("get_msg");
@@ -329,19 +351,19 @@ public class MainActivity extends AppCompatActivity
 //        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 //      //  msg = msg.replace("\n", "");
 //       String message = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
- //      String senderNumber = msg.substring(0, msg.lastIndexOf(":"));
+        //      String senderNumber = msg.substring(0, msg.lastIndexOf(":"));
 
 
         Uri mSmsQueryUri = Uri.parse("content://sms/inbox");
-        String messageBody="";
+        String messageBody = "";
         Cursor cursor = null;
         try {
             cursor = getContentResolver().query(mSmsQueryUri, null, null, null, null);
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 cursor.moveToFirst();
                 messageBody = cursor.getString(cursor.getColumnIndexOrThrow("body"));
-               // Toast.makeText(this, body, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, body, Toast.LENGTH_SHORT).show();
                 break;
             }
             cursor.close();
@@ -355,11 +377,11 @@ public class MainActivity extends AppCompatActivity
 
 
             /*    Toast.makeText(context, "From: " + senderNumber + " Message: " + message, Toast.LENGTH_LONG).show();*/
-        String random = sharedPreferences.getString("codeForNumberVerification","fdffaudvfdvfvvfd+asvvvsavc");
+        String random = sharedPreferences.getString("codeForNumberVerification", "fdffaudvfdvfvvfd+asvvvsavc");
         String userPhone = userNumber;
 
 
-       // if (PhoneNumberUtils.compare(getApplicationContext(), senderNumber, userPhone) && random.equals(message)) {
+        // if (PhoneNumberUtils.compare(getApplicationContext(), senderNumber, userPhone) && random.equals(message)) {
         if (random.equals(messageBody)) {
 
             saveStringInSharedPreferences("userName", userName);
@@ -370,7 +392,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show();
 
-           // sendUserInformationToServer(userName, userNumber);
+            // sendUserInformationToServer(userName, userNumber);
             Toast.makeText(getApplicationContext(), "Phone Number is verified", Toast.LENGTH_SHORT).show();
 
 
@@ -380,7 +402,9 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
     String random;
+
     private void sendSmsForVerify(final String phoneNumber) {
 
         new Handler().postDelayed(new Runnable() {
@@ -389,7 +413,7 @@ public class MainActivity extends AppCompatActivity
 
 
                 random = String.valueOf((int) (Math.random() * 1000 + 100));
-                saveStringInSharedPreferences( "codeForNumberVerification", random);
+                saveStringInSharedPreferences("codeForNumberVerification", random);
 
                 if (phoneNumber.length() > 0 && random.length() > 0) {
 
@@ -506,12 +530,11 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
 
-
         action_tick = menu.findItem(R.id.action_save);
 
         //flagForSaveTick = sharedPreferences.getInt("flagForSaveTick",1);
 
-        if (flagForSaveTick ==1){
+        if (flagForSaveTick == 1) {
 
             action_tick.setVisible(true);
         }
@@ -520,45 +543,40 @@ public class MainActivity extends AppCompatActivity
     }
 /*address*/
 
-    public static String GetFullAddress(Context context) {
+    public String GetFullAddress(double lat, double lon) {
+        Context context = this;
         String address = "";
 
-        if (SApplication.LOCATION != null) {
-            double lat = SApplication.LOCATION.getLatitude();
-            double lon = SApplication.LOCATION.getLongitude();
-            String co = lat + "," + lon;
+        Geocoder geocoder = new Geocoder(context, new Locale("en"));
+        try {
+            // get address from location
+            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
 
-
-            Geocoder geocoder = new Geocoder(context, new Locale("en"));
-            try {
-                // get address from location
-                List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
-                if (addresses != null && addresses.size() != 0) {
-                    StringBuilder builder = new StringBuilder();
-                    Address returnAddress = addresses.get(0);
-                    for (int i = 0; i < returnAddress.getMaxAddressLineIndex(); i++) {
-                        builder.append(returnAddress.getAddressLine(i));
-                        builder.append(", ");
-                    }
-                    builder.append(returnAddress.getAdminArea() + ", ");
-                    builder.append(returnAddress.getCountryName() + ", ");
-
-                    address = builder.toString();
-
-
-                    // Toast.makeText(getApplicationContext(), messageLocation, Toast.LENGTH_LONG).show();
+            if (addresses != null && addresses.size() != 0) {
+                StringBuilder builder = new StringBuilder();
+                Address returnAddress = addresses.get(0);
+                for (int i = 0; i < returnAddress.getMaxAddressLineIndex(); i++) {
+                    builder.append(returnAddress.getAddressLine(i));
+                    builder.append(", ");
                 }
-            } catch (IOException e) {
+                builder.append(returnAddress.getLocality() + ", ");
+                builder.append(returnAddress.getPostalCode() + ", ");
+                builder.append(returnAddress.getSubAdminArea() + ", ");
+                builder.append(returnAddress.getSubLocality() + ", ");
+                builder.append(returnAddress.getPremises() + ", ");
+                builder.append(returnAddress.getCountryName() + ", ");
+                address = builder.toString();
+
+
+                // Toast.makeText(getApplicationContext(), messageLocation, Toast.LENGTH_LONG).show();
             }
+        } catch (IOException e) {
+        }
 
-//            Operations.SaveToSharedPreference(context, "Address", address);
-//            Operations.SaveToSharedPreference(context, "Coordinate", co);
-
-       }
-
-        return address;
+        return address.replaceAll("null,","");
     }
-/*address*/
+
+    /*address*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -571,8 +589,15 @@ public class MainActivity extends AppCompatActivity
 
 
             return true;
-        }if (id == R.id.action_save) {
+        }
+        if (id == R.id.action_save) {
 
+            String phoneNumber = etLocationNotifierPhoneNumber.getText().toString();
+            String time = etTimePick.getText().toString();
+            String locationName = etLocationName.getText().toString();
+
+
+            saveLocationAndTime(phoneNumber, time, locationName);
 
             return true;
         }
@@ -605,7 +630,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void timePick(){
+    private void timePick() {
 
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -617,22 +642,21 @@ public class MainActivity extends AppCompatActivity
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
                 String selectedHourString = String.valueOf(selectedHour);
-                String selectedMinuteString= String.valueOf(selectedMinute);
+                String selectedMinuteString = String.valueOf(selectedMinute);
 
-                if (selectedHour<10) {
-                    selectedHourString = "0"+selectedHour;
+                if (selectedHour < 10) {
+                    selectedHourString = "0" + selectedHour;
                 }
-                if (selectedMinute<10){
-                    selectedMinuteString = "0"+selectedMinute;
+                if (selectedMinute < 10) {
+                    selectedMinuteString = "0" + selectedMinute;
                 }
 
-                etTimePick.setText( selectedHourString + ":" + selectedMinuteString);
+                etTimePick.setText(selectedHourString + ":" + selectedMinuteString);
 
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
-
 
 
     }
@@ -671,11 +695,10 @@ public class MainActivity extends AppCompatActivity
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        mLocation=mLastLocation;
+        mLocation = mLastLocation;
 
 
     }
-
 
 
     @Override
@@ -765,8 +788,8 @@ public class MainActivity extends AppCompatActivity
                 //  tvLatLng.setText(Operations.GetFullAddress(getApplicationContext(),latLng));
                 // Toast.makeText(LocationNotifierActivity.this, getAddress(latLng.latitude,latLng.longitude), Toast.LENGTH_SHORT).show();
 
-                etLocationName.setText(latLng.latitude + ", " + latLng.longitude);
-
+                etLocationName.setText(GetFullAddress(latLng.latitude, latLng.longitude));
+                saveStringInSharedPreferences("latLng",latLng.latitude+"," +latLng.longitude);
                 mMap.clear();
                 Marker m = mMap.addMarker(new MarkerOptions()
                         .position(latLng)
@@ -779,14 +802,58 @@ public class MainActivity extends AppCompatActivity
 
     MenuItem action_tick;
 
-    private void saveLocationAndTime(String phoneNumber, String time, String locationName){
+    private void saveLocationAndTime(String phoneNumber, String time, String locationName) {
 
-        if (phoneNumber.length()>0 && time.length()==5 && locationName.length()>0){
+        if (phoneNumber.length() > 0 && time.length() == 5 && locationName.length() > 0) {
 
+            saveStringInSharedPreferences("phoneNumberLn", phoneNumber);
+            saveStringInSharedPreferences("time", time);
+            saveStringInSharedPreferences("locationName", locationName);
+
+
+
+
+            locationInputLo.setVisibility(View.GONE);
+            locationNote.setVisibility(View.VISIBLE);
+            saveIntInSharedPreferences("flagForInputNote", 0);
+
+            tvLocationNote.setText("Phone Number : " + phoneNumber + ", Time : " + time + ", Location Address: " + locationName);
+
+            int hour = Integer.parseInt(time.split(":")[0]) ;
+            int minute = Integer.parseInt(time.split(":")[1]);
+
+
+            alarmMgr(hour,minute);
+
+        } else {
+
+            Toast.makeText(this, "Fill up Field", Toast.LENGTH_SHORT).show();
         }
 
 
     }
+
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+
+    private void alarmMgr(int hour, int minute) {
+
+
+        alarmMgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), LocationService.class);
+        alarmIntent = PendingIntent.getService(getApplicationContext(), 0, intent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000*5, alarmIntent);
+
+
+
+    }
+
 
     public void btnSaveCode(View view) {
 
@@ -819,13 +886,12 @@ public class MainActivity extends AppCompatActivity
         timePick();
     }
 
-    public Location getCurrentLocation(){
-        if(!mGoogleApiClient.isConnected())
-            mGoogleApiClient.connect();
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        mLocation=mLastLocation;
-        return mLastLocation                ;
-    }
 
+
+    public void btnLocationEdit(View view) {
+        locationInputLo.setVisibility(View.VISIBLE);
+        locationNote.setVisibility(View.GONE);
+
+
+    }
 }
