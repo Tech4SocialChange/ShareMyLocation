@@ -84,13 +84,13 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/locationSmsLo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#024e3c"
         >
 
         <LinearLayout
-            android:id="@+id/locationSmsLo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
@@ -105,6 +105,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/etPhoneNumberForGetLocation1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -115,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Save"
+                    android:onClick="btnSavePhoneNumber1"
                     android:textAllCaps="false" />
             </LinearLayout>
 
@@ -126,6 +128,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/etPhoneNumberForGetLocation2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -136,6 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Save"
+                    android:onClick="btnSavePhoneNumber2"
                     android:textAllCaps="false" />
             </LinearLayout>
             <LinearLayout
@@ -146,6 +150,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/etPhoneNumberForGetLocation3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -156,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Save"
+                    android:onClick="btnSavePhoneNumber3"
                     android:textAllCaps="false" />
             </LinearLayout>
 
@@ -169,6 +175,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/etSecurityCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -194,6 +201,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tvSecurityCode"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
@@ -209,6 +217,20 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/border"
+                >
+            <Button
+
+                android:layout_width="match_parent"
+                android:text="Send the Code to Number"
+                android:textAllCaps="false"
+                android:onClick="btnSendCode"
+                android:layout_height="match_parent" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

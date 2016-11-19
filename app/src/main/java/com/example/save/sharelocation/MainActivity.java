@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,15 +82,18 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     NavigationView navigationView;
 
-    EditText etUserName, etUserNumber, etLocationName;
-    LinearLayout userNameNumberLo, locationNotifierLo, locationSmsLo, securityCodeEtLo,securityCodeTvLo;
+    EditText etUserName, etUserNumber, etLocationName, etPhoneNumberForGetLocation1,
+            etPhoneNumberForGetLocation2, etPhoneNumberForGetLocation3, etSecurityCode;
+    LinearLayout userNameNumberLo, locationNotifierLo, securityCodeEtLo,securityCodeTvLo;
+
+    ScrollView locationSmsLo;
+    TextView tvSecurityCode;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
 
     int flagForRegister;
-    int flagForMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +114,13 @@ public class MainActivity extends AppCompatActivity
         etUserNumber = (EditText) findViewById(R.id.etUserNumber);
         etUserName = (EditText) findViewById(R.id.etUserName);
         etLocationName = (EditText) findViewById(R.id.etLocationName);
+        etPhoneNumberForGetLocation1 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation1);
+        etPhoneNumberForGetLocation2 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation2);
+        etPhoneNumberForGetLocation3 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation3);
+        tvSecurityCode = (TextView)findViewById(R.id.tvSecurityCode);
         userNameNumberLo = (LinearLayout) findViewById(R.id.userNameNumberLo);
         locationNotifierLo = (LinearLayout) findViewById(R.id.locationNotifierLo);
-        locationSmsLo = (LinearLayout) findViewById(R.id.locationSmsLo);
+        locationSmsLo = (ScrollView) findViewById(R.id.locationSmsLo);
         securityCodeEtLo = (LinearLayout) findViewById(R.id.securityCodeEtLo);
         securityCodeTvLo = (LinearLayout) findViewById(R.id.securityCodeTvLo);
 
@@ -131,6 +139,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setVisibility(View.GONE);
             userNameNumberLo.setVisibility(View.VISIBLE);
             locationNotifierLo.setVisibility(View.GONE);
+            locationSmsLo.setVisibility(View.GONE);
         } else {
             userNameNumberLo.setVisibility(View.GONE);
             locationNotifierLo.setVisibility(View.VISIBLE);
@@ -233,6 +242,66 @@ public class MainActivity extends AppCompatActivity
                     });
 
             alertDialog.show();
+
+    }
+
+
+    private void alertDialogForEditSecurityCode( ) {
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Edit");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Do you want edit Security code");
+        alertDialog.setIcon(R.drawable.alert_icon);
+
+
+        alertDialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+
+        alertDialog.show();
+
+    }
+
+
+    private void alertDialogForExit( ) {
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Exit");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Do you want to exit");
+        alertDialog.setIcon(R.drawable.alert_icon);
+
+
+        alertDialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+
+        alertDialog.show();
 
     }
 
@@ -591,6 +660,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+
+
+
     public void btnSaveCode(View view) {
 
         securityCodeEtLo.setVisibility(View.GONE);
@@ -602,5 +674,18 @@ public class MainActivity extends AppCompatActivity
 
         securityCodeEtLo.setVisibility(View.VISIBLE);
         securityCodeTvLo.setVisibility(View.GONE);
+    }
+
+    public void btnSendCode(View view) {
+
+    }
+
+    public void btnSavePhoneNumber1(View view) {
+    }
+
+    public void btnSavePhoneNumber2(View view) {
+    }
+
+    public void btnSavePhoneNumber3(View view) {
     }
 }
