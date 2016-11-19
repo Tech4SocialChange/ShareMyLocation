@@ -6,4 +6,11 @@
         android:orderInCategory="100"
         android:title="About"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="100"
+        android:title="Save"
+        android:icon="@drawable/tick_icon_save"
+        app:showAsAction="always" />
 </menu>

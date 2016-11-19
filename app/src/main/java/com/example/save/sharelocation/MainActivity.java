@@ -2,6 +2,7 @@ package com.example.save.sharelocation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.ConnectivityManager;
@@ -41,6 +44,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -66,10 +70,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -83,7 +90,8 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     EditText etUserName, etUserNumber, etLocationName, etPhoneNumberForGetLocation1,
-            etPhoneNumberForGetLocation2, etPhoneNumberForGetLocation3, etSecurityCode;
+            etPhoneNumberForGetLocation2, etPhoneNumberForGetLocation3, etSecurityCode, etTimePick, etLocationNotifierPhoneNumber;
+
     LinearLayout userNameNumberLo, locationNotifierLo, securityCodeEtLo,securityCodeTvLo;
 
     ScrollView locationSmsLo;
@@ -94,6 +102,7 @@ public class MainActivity extends AppCompatActivity
 
 
     int flagForRegister;
+    int flagForSaveTick = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +126,17 @@ public class MainActivity extends AppCompatActivity
         etPhoneNumberForGetLocation1 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation1);
         etPhoneNumberForGetLocation2 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation2);
         etPhoneNumberForGetLocation3 = (EditText) findViewById(R.id.etPhoneNumberForGetLocation3);
+        etLocationNotifierPhoneNumber = (EditText) findViewById(R.id.etLocationNotifierPhoneNumber);
+        etTimePick = (EditText) findViewById(R.id.etTimePick);
+
         tvSecurityCode = (TextView)findViewById(R.id.tvSecurityCode);
         userNameNumberLo = (LinearLayout) findViewById(R.id.userNameNumberLo);
         locationNotifierLo = (LinearLayout) findViewById(R.id.locationNotifierLo);
         locationSmsLo = (ScrollView) findViewById(R.id.locationSmsLo);
         securityCodeEtLo = (LinearLayout) findViewById(R.id.securityCodeEtLo);
         securityCodeTvLo = (LinearLayout) findViewById(R.id.securityCodeTvLo);
+
+        etTimePick.setInputType(0);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -148,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // saveIntInSharedPreferences("flagForRegister", 1);
+
 
 
 
@@ -489,9 +504,61 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+
+
+        action_tick = menu.findItem(R.id.action_save);
+
+        //flagForSaveTick = sharedPreferences.getInt("flagForSaveTick",1);
+
+        if (flagForSaveTick ==1){
+
+            action_tick.setVisible(true);
+        }
+
         return true;
     }
+/*address*/
 
+    public static String GetFullAddress(Context context) {
+        String address = "";
+
+        if (SApplication.LOCATION != null) {
+            double lat = SApplication.LOCATION.getLatitude();
+            double lon = SApplication.LOCATION.getLongitude();
+            String co = lat + "," + lon;
+
+
+            Geocoder geocoder = new Geocoder(context, new Locale("en"));
+            try {
+                // get address from location
+                List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
+                if (addresses != null && addresses.size() != 0) {
+                    StringBuilder builder = new StringBuilder();
+                    Address returnAddress = addresses.get(0);
+                    for (int i = 0; i < returnAddress.getMaxAddressLineIndex(); i++) {
+                        builder.append(returnAddress.getAddressLine(i));
+                        builder.append(", ");
+                    }
+                    builder.append(returnAddress.getAdminArea() + ", ");
+                    builder.append(returnAddress.getCountryName() + ", ");
+
+                    address = builder.toString();
+
+
+                    // Toast.makeText(getApplicationContext(), messageLocation, Toast.LENGTH_LONG).show();
+                }
+            } catch (IOException e) {
+            }
+
+//            Operations.SaveToSharedPreference(context, "Address", address);
+//            Operations.SaveToSharedPreference(context, "Coordinate", co);
+
+       }
+
+        return address;
+    }
+/*address*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -501,6 +568,12 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+
+
+            return true;
+        }if (id == R.id.action_save) {
+
+
             return true;
         }
 
@@ -517,17 +590,53 @@ public class MainActivity extends AppCompatActivity
             setTitle("Location Notifier");
             locationNotifierLo.setVisibility(View.VISIBLE);
             locationSmsLo.setVisibility(View.GONE);
+            action_tick.setVisible(true);
 
         } else if (id == R.id.nav_location_SMS) {
             setTitle("Location SMS");
             locationNotifierLo.setVisibility(View.GONE);
             locationSmsLo.setVisibility(View.VISIBLE);
+            action_tick.setVisible(false);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    private void timePick(){
+
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                String selectedHourString = String.valueOf(selectedHour);
+                String selectedMinuteString= String.valueOf(selectedMinute);
+
+                if (selectedHour<10) {
+                    selectedHourString = "0"+selectedHour;
+                }
+                if (selectedMinute<10){
+                    selectedMinuteString = "0"+selectedMinute;
+                }
+
+                etTimePick.setText( selectedHourString + ":" + selectedMinuteString);
+
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
+
+
+
+    }
+
 
     double latitude;
     double longitude;
@@ -559,7 +668,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
+
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        mLocation=mLastLocation;
+
+
     }
+
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -660,8 +777,16 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    MenuItem action_tick;
+
+    private void saveLocationAndTime(String phoneNumber, String time, String locationName){
+
+        if (phoneNumber.length()>0 && time.length()==5 && locationName.length()>0){
+
+        }
 
 
+    }
 
     public void btnSaveCode(View view) {
 
@@ -688,4 +813,19 @@ public class MainActivity extends AppCompatActivity
 
     public void btnSavePhoneNumber3(View view) {
     }
+
+    public void etTimePick(View view) {
+
+        timePick();
+    }
+
+    public Location getCurrentLocation(){
+        if(!mGoogleApiClient.isConnected())
+            mGoogleApiClient.connect();
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        mLocation=mLastLocation;
+        return mLastLocation                ;
+    }
+
 }
